@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using UrlShortener.Logic;
 using UrlShortener.Logic.Commands;
 using UrlShortener.Logic.Handlers;
 
@@ -28,6 +29,7 @@ namespace UrlShortener.Api
         {
             services.AddMvc();
             services.AddMediatR();
+            services.RegisterLogic();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
