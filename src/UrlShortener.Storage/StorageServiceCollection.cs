@@ -9,6 +9,6 @@ namespace UrlShortener.Storage
     {
           public static IServiceCollection RegisterStorage(this IServiceCollection services) =>
             services
-                .AddTransient<IUrlDao, InMemoryUrlDao>();
+                .AddSingleton<IUrlDao, InMemoryUrlDao>();
     }
 }
