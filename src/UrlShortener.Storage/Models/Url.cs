@@ -4,7 +4,7 @@ namespace UrlShortener.Storage.Models
 {
     public class Url
     {
-        public Url(string path, Guid id)
+        public Url(Guid id, string path)
         {
             Id = id;
             Path = path;
