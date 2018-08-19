@@ -17,7 +17,7 @@ namespace UrlShortener.UnitTests.Controllers
     public class RedirectControllerTests : BaseUnitTest
     {
         [Fact]
-        public async Task GoToPath_MediatorReturnsOkWithUrl_ReturnRedirectResult()
+        public async Task GoToPath_MediatorReturnsOkWithUrl_ReturnRedirectResultToPath()
         {
             var mediatorMock = A.Fake<IMediator>();
             var shortPathFixture = Fixture.Create<string>();
@@ -32,6 +32,24 @@ namespace UrlShortener.UnitTests.Controllers
             var result = await sut.GoToPath(shortPathFixture);
             result.Should().BeAssignableTo<RedirectResult>();
             result.As<RedirectResult>().Url.Should().Be(pathFixture);
+        }
+
+        [Fact]
+        public async Task GoToPath_MediatorReturnsError_ReturnRedirectResultToBadPage()
+        {
+            var mediatorMock = A.Fake<IMediator>();
+            var shortPathFixture = Fixture.Create<string>();
+            var errorMessageFixture = Fixture.Create<string>();
+            A.CallTo(
+                () => mediatorMock
+                    .Send(A<GetRedirectPath>.That
+                        .Matches(query => query.ShortPath == shortPathFixture)
+                        , CancellationToken.None))
+                .Returns(Task.FromResult(Result.Fail<string>(errorMessageFixture)));
+            var sut = new RedirectController(mediatorMock);
+            var result = await sut.GoToPath(shortPathFixture);
+            result.Should().BeAssignableTo<ViewResult>();
+            result.As<ViewResult>().ViewName.Should().Be("BadPage");
         }
     }
 }
