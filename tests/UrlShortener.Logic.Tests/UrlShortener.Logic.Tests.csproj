@@ -17,9 +17,4 @@
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\UrlShortener.Api\UrlShortener.Api.csproj" />
-    <ProjectReference Include="..\UrlShortener.Tests.Abstraction\UrlShortener.Tests.Abstraction.csproj" />
-  </ItemGroup>
-
 </Project>

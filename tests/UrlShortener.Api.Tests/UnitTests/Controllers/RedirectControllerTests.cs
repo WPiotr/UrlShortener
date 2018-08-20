@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CSharpFunctionalExtensions;
 using System.Threading;
-using UrlShortener.Api.Tests;
+using UrlShortener.Tests.Abstraction;
 
 namespace UrlShortener.UnitTests.Controllers
 {

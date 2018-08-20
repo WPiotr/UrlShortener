@@ -1,6 +1,6 @@
 using AutoFixture;
 
-namespace UrlShortener.Api.Tests
+namespace UrlShortener.Tests.Abstraction
 {
     public class BaseUnitTest
     {
