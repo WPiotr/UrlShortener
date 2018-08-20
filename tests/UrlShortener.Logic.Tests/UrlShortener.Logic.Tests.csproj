@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\UrlShortener.Logic\UrlShortener.Logic.csproj" />
+    <ProjectReference Include="..\UrlShortener.Tests.Abstraction\UrlShortener.Tests.Abstraction.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="autofixture" Version="4.5.0" />
     <PackageReference Include="fakeiteasy" Version="4.8.0" />
     <PackageReference Include="fluentassertions" Version="5.4.1" />
