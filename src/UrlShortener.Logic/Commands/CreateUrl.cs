@@ -4,7 +4,7 @@ using MediatR;
 
 namespace UrlShortener.Logic.Commands
 {
-    public class CreateUrl : IRequest<Result>
+    public class CreateUrl : IRequest<Result<string>>
     {
 
         public CreateUrl(string path)

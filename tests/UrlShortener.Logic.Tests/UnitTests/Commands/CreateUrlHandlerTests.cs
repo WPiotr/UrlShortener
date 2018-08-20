@@ -34,6 +34,8 @@ namespace UrlShortener.Logic.Tests.UnitTests.Commands
             //When
             var result = await sut.Handle(commandFixture, CancellationToken.None);
             result.IsSuccess.Should().BeTrue();
+            string expectedValue = commandFixture.Id.ToString("N");
+            result.Value.Should().Be(expectedValue);
         }
 
         [Fact]

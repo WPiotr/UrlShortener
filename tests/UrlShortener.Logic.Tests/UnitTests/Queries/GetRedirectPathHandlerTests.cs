@@ -26,7 +26,7 @@ namespace UrlShortener.Logic.Tests.UnitTests.Queries
             var urlFixture = Fixture.Create<Url>();
             A.CallTo(
                 () => urlDaoMock
-                .GetByPath(A<string>.That.IsEqualTo(shortPathFixture)))
+                .GetByShortPath(A<string>.That.IsEqualTo(shortPathFixture)))
                 .Returns(Task.FromResult(Result.Ok(urlFixture)));
 
             var sut = new GetRedirectPathHandler(urlDaoMock);
@@ -48,7 +48,7 @@ namespace UrlShortener.Logic.Tests.UnitTests.Queries
             var errorMessage = Fixture.Create<string>();
             A.CallTo(
                 () => urlDaoMock
-                .GetByPath(A<string>.That.IsEqualTo(shortPathFixture)))
+                .GetByShortPath(A<string>.That.IsEqualTo(shortPathFixture)))
                 .Returns(Task.FromResult(Result.Fail<Url>(errorMessage)));
 
             var sut = new GetRedirectPathHandler(urlDaoMock);

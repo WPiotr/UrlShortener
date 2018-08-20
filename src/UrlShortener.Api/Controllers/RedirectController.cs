@@ -24,6 +24,6 @@ namespace UrlShortener.Api.Controllers
             .OnBoth(result => 
                 result.IsSuccess 
                 ? Redirect(result.Value) as IActionResult
-                : View("BadPage", new BadPageViewModel(shortPath, "eee"))); 
+                : View("BadPage", new BadPageViewModel(shortPath, result.Error))); 
     }
 }

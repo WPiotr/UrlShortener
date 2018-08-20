@@ -46,14 +46,14 @@ namespace UrlShortener.Storage.Dao
             }
         }
 
-        public Task<Result<Url>> GetByPath(string path)
+        public Task<Result<Url>> GetByShortPath(string shortPath)
         {
             try
             {
-                var url = _urls.FirstOrDefault(u => u.Path.Equals(path));
+                var url = _urls.FirstOrDefault(u => u.ShortPath.Equals(shortPath));
                 if (url != null)
                 {
-                    Task.FromResult(Result.Ok(url));
+                    return Task.FromResult(Result.Ok(url));
                 }
                 return Task.FromResult(Result.Fail<Url>("Url not found"));
             }

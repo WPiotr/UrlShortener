@@ -18,7 +18,7 @@ namespace UrlShortener.Logic.Queries.Handlers
             GetRedirectPath request,
              CancellationToken cancellationToken) =>
              _urlDao
-                .GetByPath(request.ShortPath)
+                .GetByShortPath(request.ShortPath)
                 .OnSuccess(url => url.Path);
     }
 }

@@ -9,6 +9,6 @@ namespace UrlShortener.Storage.Dao.Abstraction
     {
         Task<Result> Save(Url url);
         Task<Result<Url>> GetById(Guid id);
-        Task<Result<Url>> GetByPath(string path);
+        Task<Result<Url>> GetByShortPath(string shortPath);
     }
 }

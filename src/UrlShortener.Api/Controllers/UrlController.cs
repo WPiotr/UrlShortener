@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using UrlShortener.Api.Models;
 using UrlShortener.Logic.Commands;
 
 namespace UrlShortener.Api.Controllers
@@ -16,11 +17,11 @@ namespace UrlShortener.Api.Controllers
         }
 
         [HttpPost]
-        public Task<IActionResult> Post([FromBody] string url) =>
+        public Task<IActionResult> Post([FromBody] UrlViewModel model) =>
             _mediator
-                .Send(new CreateUrl(url))
-                .OnBoth(res => res.IsSuccess 
-                    ? Ok() as IActionResult 
+                .Send(new CreateUrl(model.Url))
+                .OnBoth(res => res.IsSuccess
+                    ? Ok(new { res.Value }) as IActionResult
                     : BadRequest(res.Error) as IActionResult);
     }
 }

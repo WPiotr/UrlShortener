@@ -9,7 +9,7 @@ using UrlShortener.Storage.Models;
 
 namespace UrlShortener.Logic.Handlers
 {
-    public class CreateUrlHandler : IRequestHandler<CreateUrl, Result>
+    public class CreateUrlHandler : IRequestHandler<CreateUrl, Result<string>>
     {
         private readonly IUrlDao _urlDao;
         public CreateUrlHandler(IUrlDao urlDao)
@@ -17,8 +17,14 @@ namespace UrlShortener.Logic.Handlers
             _urlDao = urlDao;
         }
 
-        public Task<Result> Handle(
-            CreateUrl request, CancellationToken cancellationToken) =>
-            _urlDao.Save(new Url(request.Id, request.Path));
+        public Task<Result<string>> Handle(
+            CreateUrl request, CancellationToken cancellationToken)
+        {
+            var url = new Url(request.Id, request.Path);
+            return _urlDao
+                .Save(url)
+                .OnSuccess(() => url.ShortPath);
+        }
+
     }
 }
