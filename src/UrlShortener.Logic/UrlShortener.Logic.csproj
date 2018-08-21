@@ -3,12 +3,13 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="5.1.0" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="5.1.0" />
-    <PackageReference Include="CSharpFunctionalExtensions" Version="1.10.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="*" />
+    <PackageReference Include="MediatR" Version="5.1.0"/>
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="5.1.0"/>
+    <PackageReference Include="CSharpFunctionalExtensions" Version="1.10.0"/>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="*"/>
+    <PackageReference Include="Valit" Version="1.0.0"/>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\UrlShortener.Storage\UrlShortener.Storage.csproj" />
+    <ProjectReference Include="..\UrlShortener.Storage\UrlShortener.Storage.csproj"/>
   </ItemGroup>
 </Project>
