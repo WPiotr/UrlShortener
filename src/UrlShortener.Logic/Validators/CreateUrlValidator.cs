@@ -1,11 +1,12 @@
 using System;
 using CSharpFunctionalExtensions;
 using UrlShortener.Logic.Commands;
+using UrlShortener.Logic.Validators.Abstraction;
 using Valit;
 
 namespace UrlShortener.Logic.Validators
 {
-    public class CreateUrlValidator
+    public class CreateUrlValidator : ICreateUrlValidator
     {
         public Result<CreateUrl> Validate(CreateUrl commandFixture)
         {

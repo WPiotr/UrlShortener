@@ -9,6 +9,7 @@ using UrlShortener.Logic.Commands.Handlers;
 using UrlShortener.Storage.Dao.Abstraction;
 using UrlShortener.Storage.Models;
 using UrlShortener.Tests.Abstraction;
+using UrlShortener.Logic.Validators.Abstraction;
 using Xunit;
 
 namespace UrlShortener.Logic.Tests.UnitTests.Commands
@@ -28,8 +29,12 @@ namespace UrlShortener.Logic.Tests.UnitTests.Commands
                     .Matches(url => url.Path.Equals(commandFixture.Path) 
                         && url.Id.Equals(commandFixture.Id))))
                 .Returns(Task.FromResult(Result.Ok()));
-
-            var sut = new CreateUrlHandler(urlDaoMock);
+            var createUrlValidatorMock = A.Fake<ICreateUrlValidator>();
+            A.CallTo(() => createUrlValidatorMock
+                .Validate(commandFixture))
+                .Returns(Result.Ok(commandFixture));
+            
+            var sut = new CreateUrlHandler(urlDaoMock, createUrlValidatorMock);
             
             //When
             var result = await sut.Handle(commandFixture, CancellationToken.None);
@@ -52,8 +57,32 @@ namespace UrlShortener.Logic.Tests.UnitTests.Commands
                     .Matches(url => url.Path.Equals(commandFixture.Path) 
                         && url.Id.Equals(commandFixture.Id))))
                 .Returns(Task.FromResult(Result.Fail(errorMessageFixture)));
+            var createUrlValidatorMock = A.Fake<ICreateUrlValidator>();
+            A.CallTo(() => createUrlValidatorMock
+                .Validate(commandFixture))
+                .Returns(Result.Ok(commandFixture));
+            var sut = new CreateUrlHandler(urlDaoMock, createUrlValidatorMock);
+            
+            //When
+            var result = await sut.Handle(commandFixture, CancellationToken.None);
+            result.IsFailure.Should().BeTrue();
+            result.Error.Should().Be(errorMessageFixture);
+        }
 
-            var sut = new CreateUrlHandler(urlDaoMock);
+        [Fact]
+        public async Task Handle_ValidatorReturnsFailure_ReturnsFailure()
+        {
+            //Given
+            var commandFixture = new CreateUrl(Fixture.Create<string>());
+
+            var urlDaoMock = A.Fake<IUrlDao>();
+
+            var errorMessageFixture = Fixture.Create<string>();
+            var createUrlValidatorMock = A.Fake<ICreateUrlValidator>();
+            A.CallTo(() => createUrlValidatorMock
+                .Validate(commandFixture))
+                .Returns(Result.Fail<CreateUrl>(errorMessageFixture));
+            var sut = new CreateUrlHandler(urlDaoMock, createUrlValidatorMock);
             
             //When
             var result = await sut.Handle(commandFixture, CancellationToken.None);
