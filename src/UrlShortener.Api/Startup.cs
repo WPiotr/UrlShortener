@@ -11,7 +11,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using UrlShortener.Logic;
 using UrlShortener.Logic.Commands;
-using UrlShortener.Logic.Handlers;
 
 namespace UrlShortener.Api
 {

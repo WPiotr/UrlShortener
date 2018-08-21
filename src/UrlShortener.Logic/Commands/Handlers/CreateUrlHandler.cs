@@ -7,7 +7,7 @@ using UrlShortener.Logic.Commands;
 using UrlShortener.Storage.Dao.Abstraction;
 using UrlShortener.Storage.Models;
 
-namespace UrlShortener.Logic.Handlers
+namespace UrlShortener.Logic.Commands.Handlers
 {
     public class CreateUrlHandler : IRequestHandler<CreateUrl, Result<string>>
     {

@@ -5,7 +5,7 @@ using CSharpFunctionalExtensions;
 using FakeItEasy;
 using FluentAssertions;
 using UrlShortener.Logic.Commands;
-using UrlShortener.Logic.Handlers;
+using UrlShortener.Logic.Commands.Handlers;
 using UrlShortener.Storage.Dao.Abstraction;
 using UrlShortener.Storage.Models;
 using UrlShortener.Tests.Abstraction;
