@@ -28,9 +28,9 @@ namespace UrlShortener.Logic.Commands.Handlers
             var url = new Url(request.Id, request.Path);
             return _createUrlValidator
                 .Validate(request)
-                .OnSuccess( command => _urlDao
-                    .Save(url)
-                    .OnSuccess(() => url.ShortPath), false);
+                .OnSuccess(() => _urlDao
+                   .Save(url)
+                   .OnSuccess(() => url.ShortPath), false);
         }
 
     }

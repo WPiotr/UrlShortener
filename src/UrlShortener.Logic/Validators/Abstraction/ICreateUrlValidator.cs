@@ -5,6 +5,6 @@ namespace UrlShortener.Logic.Validators.Abstraction
 {
     public interface ICreateUrlValidator
     {
-         Result<CreateUrl> Validate(CreateUrl commandFixture);
+        Result Validate(CreateUrl commandFixture);
     }
 }

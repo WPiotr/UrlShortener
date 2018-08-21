@@ -8,13 +8,13 @@ namespace UrlShortener.Logic.Validators
 {
     public class CreateUrlValidator : ICreateUrlValidator
     {
-        public Result<CreateUrl> Validate(CreateUrl commandFixture)
+        public Result Validate(CreateUrl commandFixture)
         {
             var validationResult = Validator.Validate(commandFixture);
             
             return validationResult.Succeeded 
-                ? Result.Ok(commandFixture)
-                : Result.Fail<CreateUrl>(string.Join(Environment.NewLine, validationResult.ErrorMessages));
+                ? Result.Ok()
+                : Result.Fail(string.Join(Environment.NewLine, validationResult.ErrorMessages));
         }
 
         private IValitator<CreateUrl> Validator =>

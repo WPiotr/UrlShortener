@@ -17,7 +17,6 @@ namespace UrlShortener.Logic.Tests.UnitTests.Validators
             var sut = new CreateUrlValidator();
             var result = sut.Validate(commandFixture);   
             result.IsSuccess.Should().BeTrue();
-            result.Value.Should().Be(commandFixture);
         }
 
         [Theory]
