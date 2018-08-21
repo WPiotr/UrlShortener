@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture;
+using AutoFixture.Xunit2;
 using CSharpFunctionalExtensions;
 using FakeItEasy;
 using FluentAssertions;
@@ -13,50 +14,42 @@ using Xunit;
 
 namespace UrlShortener.Logic.Tests.UnitTests.Queries
 {
-    public class GetRedirectPathHandlerTests : BaseUnitTest
+    public class GetRedirectPathHandlerTests
     {
-        [Fact]
-        public async Task Handle_DaoReturnsPath_ReturnPath()
+        [Theory]
+        [AutoData]
+        public async Task Handle_DaoReturnsPath_ReturnPath(GetRedirectPath queryFixture, Url urlFixture)
         {
-            //Given
-            var shortPathFixture = Fixture.Create<string>();
-            var queryFixture = new GetRedirectPath(shortPathFixture);
-
             var urlDaoMock = A.Fake<IUrlDao>();
-            var urlFixture = Fixture.Create<Url>();
             A.CallTo(
                 () => urlDaoMock
-                .GetByShortPath(A<string>.That.IsEqualTo(shortPathFixture)))
+                .GetByShortPath(A<string>.That.IsEqualTo(queryFixture.ShortPath)))
                 .Returns(Task.FromResult(Result.Ok(urlFixture)));
 
             var sut = new GetRedirectPathHandler(urlDaoMock);
-            //When
+
             var result = await sut.Handle(queryFixture, CancellationToken.None);
-            //Then
+
             result.IsSuccess.Should().BeTrue();
             result.Value.Should().Be(urlFixture.Path);
         }
 
-        [Fact]
-        public async Task Handle_DaoReturnsFailure_ReturnFailure()
+        [Theory]
+        [AutoData]
+        public async Task Handle_DaoReturnsFailure_ReturnFailure(GetRedirectPath queryFixture, string errorMessageFixture)
         {
-            //Given
-            var shortPathFixture = Fixture.Create<string>();
-            var queryFixture = new GetRedirectPath(shortPathFixture);
-
             var urlDaoMock = A.Fake<IUrlDao>();
-            var errorMessage = Fixture.Create<string>();
             A.CallTo(
                 () => urlDaoMock
-                .GetByShortPath(A<string>.That.IsEqualTo(shortPathFixture)))
-                .Returns(Task.FromResult(Result.Fail<Url>(errorMessage)));
+                .GetByShortPath(A<string>.That.IsEqualTo(queryFixture.ShortPath)))
+                .Returns(Task.FromResult(Result.Fail<Url>(errorMessageFixture)));
 
             var sut = new GetRedirectPathHandler(urlDaoMock);
-            //When
+
             var result = await sut.Handle(queryFixture, CancellationToken.None);
-            //Then
+
             result.IsFailure.Should().BeTrue();
-            result.Error.Should().Be(errorMessage);
+            result.Error.Should().Be(errorMessageFixture);
         }
     }
 }

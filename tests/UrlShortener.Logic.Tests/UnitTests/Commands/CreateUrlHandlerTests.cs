@@ -11,50 +11,45 @@ using UrlShortener.Storage.Models;
 using UrlShortener.Tests.Abstraction;
 using UrlShortener.Logic.Validators.Abstraction;
 using Xunit;
+using AutoFixture.Xunit2;
 
 namespace UrlShortener.Logic.Tests.UnitTests.Commands
 {
-    public class CreateUrlHandlerTests : BaseUnitTest
+    public class CreateUrlHandlerTests
     {
-        [Fact]
-        public async Task Handle_DaoReturnsOk_ReturnOk()
+        [Theory]
+        [AutoData]
+        public async Task Handle_DaoReturnsOk_ReturnOk(CreateUrl commandFixture)
         {
-            //Given
-            var commandFixture = new CreateUrl(Fixture.Create<string>());
-
             var urlDaoMock = A.Fake<IUrlDao>();
 
             A.CallTo(() => urlDaoMock
                 .Save(A<Url>.That
-                    .Matches(url => url.Path.Equals(commandFixture.Path) 
+                    .Matches(url => url.Path.Equals(commandFixture.Path)
                         && url.Id.Equals(commandFixture.Id))))
                 .Returns(Task.FromResult(Result.Ok()));
             var createUrlValidatorMock = A.Fake<ICreateUrlValidator>();
             A.CallTo(() => createUrlValidatorMock
                 .Validate(commandFixture))
                 .Returns(Result.Ok(commandFixture));
-            
+
             var sut = new CreateUrlHandler(urlDaoMock, createUrlValidatorMock);
-            
-            //When
+
             var result = await sut.Handle(commandFixture, CancellationToken.None);
             result.IsSuccess.Should().BeTrue();
             string expectedValue = commandFixture.Id.ToString("N");
             result.Value.Should().Be(expectedValue);
         }
 
-        [Fact]
-        public async Task Handle_DaoReturnsFailure_ReturnsFailure()
+        [Theory]
+        [AutoData]
+        public async Task Handle_DaoReturnsFailure_ReturnsFailure(CreateUrl commandFixture, string errorMessageFixture)
         {
-            //Given
-            var commandFixture = new CreateUrl(Fixture.Create<string>());
-
             var urlDaoMock = A.Fake<IUrlDao>();
 
-            var errorMessageFixture = Fixture.Create<string>();
             A.CallTo(() => urlDaoMock
                 .Save(A<Url>.That
-                    .Matches(url => url.Path.Equals(commandFixture.Path) 
+                    .Matches(url => url.Path.Equals(commandFixture.Path)
                         && url.Id.Equals(commandFixture.Id))))
                 .Returns(Task.FromResult(Result.Fail(errorMessageFixture)));
             var createUrlValidatorMock = A.Fake<ICreateUrlValidator>();
@@ -62,29 +57,24 @@ namespace UrlShortener.Logic.Tests.UnitTests.Commands
                 .Validate(commandFixture))
                 .Returns(Result.Ok(commandFixture));
             var sut = new CreateUrlHandler(urlDaoMock, createUrlValidatorMock);
-            
-            //When
+
             var result = await sut.Handle(commandFixture, CancellationToken.None);
             result.IsFailure.Should().BeTrue();
             result.Error.Should().Be(errorMessageFixture);
         }
 
-        [Fact]
-        public async Task Handle_ValidatorReturnsFailure_ReturnsFailure()
+        [Theory]
+        [AutoData]
+        public async Task Handle_ValidatorReturnsFailure_ReturnsFailure(CreateUrl commandFixture, string errorMessageFixture)
         {
-            //Given
-            var commandFixture = new CreateUrl(Fixture.Create<string>());
-
             var urlDaoMock = A.Fake<IUrlDao>();
 
-            var errorMessageFixture = Fixture.Create<string>();
             var createUrlValidatorMock = A.Fake<ICreateUrlValidator>();
             A.CallTo(() => createUrlValidatorMock
                 .Validate(commandFixture))
                 .Returns(Result.Fail<CreateUrl>(errorMessageFixture));
             var sut = new CreateUrlHandler(urlDaoMock, createUrlValidatorMock);
-            
-            //When
+
             var result = await sut.Handle(commandFixture, CancellationToken.None);
             result.IsFailure.Should().BeTrue();
             result.Error.Should().Be(errorMessageFixture);
