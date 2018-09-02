@@ -17,8 +17,15 @@ namespace UrlShortener.Api
             BuildWebHost(args).Run();
         }
 
+        private static IConfiguration GetConfiguration() =>
+            new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .Build();
+
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseConfiguration(GetConfiguration())
                 .UseStartup<Startup>()
                 .Build();
     }
